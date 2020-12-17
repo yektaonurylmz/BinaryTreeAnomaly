@@ -1,84 +1,90 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class BinaryTree {
 
-    private Node rootNode;
+    private Node root;
+    private static ArrayList<Integer> visitedNodes = new ArrayList<>();
 
-
+    BinaryTree(int data){
+        root=new Node(data);
+    }
+    BinaryTree(){
+        root = null;
+    }
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree();
-        tree.addNode(50);
-        tree.addNode(25);
-        tree.addNode(10);
-        tree.addNode(75);
-        tree.addNode(15);
-        tree.addNode(60);
-        tree.addNode(80);
-        tree.addNode(100);
-        tree.addNode(10);
-        tree.PrintInOrder(tree.rootNode);
-        boolean result = tree.checkBinaryTree(tree.rootNode);
-        System.out.println("Result: " + result);
+
+        tree.root=new Node(50);
+        tree.root.leftChild= new Node(25);
+        tree.root.rightChild= new Node(75);
+        tree.root.rightChild.rightChild=new Node(80);
+        tree.root.leftChild.leftChild=new Node(15);
+        tree.root.leftChild.rightChild=new Node(30);
+        tree.root.leftChild.rightChild.rightChild=new Node(32);
+        tree.root.leftChild.rightChild.leftChild=new Node(26);
+        tree.root.leftChild.leftChild.leftChild=new Node(13);
+        tree.root.leftChild.leftChild.rightChild=new Node(23);
+        tree.root.leftChild.leftChild.rightChild.leftChild=new Node(22);
+        tree.root.leftChild.leftChild.rightChild.rightChild=new Node(24);
+        tree.root.leftChild.leftChild.leftChild.leftChild=new Node(12);
+        tree.root.leftChild.leftChild.leftChild.rightChild=new Node(14);
+
+        // Binary tree yapısına uymayan -Anomaliye sahip- bir ağaç oluşturuldu.
+        tree.root.rightChild.leftChild =  tree.root.leftChild.leftChild;
+        tree.PrintInOrder(tree.root);
+        boolean isAnomaly = tree.IsAnomaly(tree.root);
+        System.out.println("Anomaly Status: " + isAnomaly);
+
+         /*
+
+                           50
+
+                      /           \
+                     /             \
+                    /               \
+                   /                 \
+                  25                 75
+               /      \             /   \
+              15       30         15      80
+             /  \      /  \      / \
+          13    23    26  32     . .
+        /   \   /  \             . .
+      12    14  22  24
+
+  */
+
+
 
     }
+    //
+    public boolean IsAnomaly(Node node) {
 
-    /**
-     * Node ekleme fonksiyonu ancak soru icin  agac bozuk sekilde olusturuldu.
-     *
-     * @param data eklenecek node
-     */
-    public void addNode(int data) {
-        Node newNode = new Node(data);
-        int value;
-        if (rootNode == null) {
-            rootNode = newNode;
-        } else {
-            Node focusNode = rootNode;
-            Node parent;
-            while (true) {
-                parent = focusNode;
-              //  value=parent.getData();
+        if (node != null) {
 
+            return IsExist(node) || IsAnomaly(node.getLeftChild()) || IsAnomaly(node.getRightChild());
 
-                if (data < focusNode.getData()) {
-                    focusNode = focusNode.getLeftChild();
-                    if (focusNode == null) {
-                        parent.setLeftChild(newNode);
-                        return;
-                    }
-                } else {
-                    focusNode = focusNode.getRightChild();
-                    if (focusNode == null) {
-                        parent.setRightChild(newNode);
-                        return;
-                    }
-                }
-            }
+        }
+        return false;
+    }
+
+    private boolean IsExist(Node node){
+        if(visitedNodes.contains(node.getData()))
+            return true;
+        else {
+            visitedNodes.add(node.getData());
+            return false;
         }
     }
 
     public void PrintInOrder(Node node) {
+
         if (node != null) {
             PrintInOrder(node.getLeftChild());
             System.out.println(node.toString());
             PrintInOrder(node.getRightChild());
         }
-    }
-
-    /**
-     *
-     * @param root check the anomaly on BT
-     * @return if there is an anomaly return false otherwise return true
-     */
-    boolean checkBinaryTree(Node root) {
-        return this.checkBinaryTree(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-
-    boolean checkBinaryTree(Node node, int min, int max) {
-        if (node == null) return true;
-        return min < node.getData() && node.getData() < max &&
-                this.checkBinaryTree(node.getLeftChild(), min, node.getData()) &&
-                this.checkBinaryTree(node.getRightChild(), node.getData(), max);
     }
 
 }

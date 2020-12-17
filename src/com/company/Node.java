@@ -2,12 +2,15 @@ package com.company;
 
 class Node {
 
-    private int data;
-    private Node leftChild;
-    private Node rightChild;
+     private int data;
+      Node leftChild;
+      Node rightChild;
 
     public Node(int data) {
         this.data = data;
+        this.leftChild=null;
+        this.rightChild=null;
+
     }
 
     public int getData() {
@@ -40,4 +43,6 @@ class Node {
                 "data=" + data +
                 '}';
     }
+
+
 }
