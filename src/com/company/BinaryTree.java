@@ -65,7 +65,11 @@ public class BinaryTree {
         }
     }
 
-
+    /**
+     *
+     * @param root check the anomaly on BT
+     * @return if there is an anomaly return false otherwise return true
+     */
     boolean checkBinaryTree(Node root) {
         return this.checkBinaryTree(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
