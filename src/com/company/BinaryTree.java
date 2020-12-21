@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class BinaryTree {
 
     private Node root;
-    private static ArrayList<Integer> visitedNodes = new ArrayList<>();
+    private static ArrayList<Node> visitedNodes = new ArrayList<>();
 
     BinaryTree(int data){
         root=new Node(data);
@@ -33,9 +33,10 @@ public class BinaryTree {
 
         // Binary tree yapısına uymayan -Anomaliye sahip- bir ağaç oluşturuldu.
         tree.root.rightChild.leftChild =  tree.root.leftChild.leftChild;
-        tree.PrintInOrder(tree.root);
-        boolean isAnomaly = tree.IsAnomaly(tree.root);
+        tree.InOrderTraversal(tree.root);
+        boolean isAnomaly = tree.CheckAnomaly(tree.root);
         System.out.println("Anomaly Status: " + isAnomaly);
+       // System.out.println(visitedNodes);
 
          /*
 
@@ -54,36 +55,31 @@ public class BinaryTree {
       12    14  22  24
 
   */
-
-
-
     }
-    //
-    public boolean IsAnomaly(Node node) {
+
+    public boolean CheckAnomaly(Node node) {
 
         if (node != null) {
 
-            return IsExist(node) || IsAnomaly(node.getLeftChild()) || IsAnomaly(node.getRightChild());
+            return ContainNode(node) || CheckAnomaly(node.getLeftChild()) || CheckAnomaly(node.getRightChild());
 
         }
         return false;
     }
-
-    private boolean IsExist(Node node){
-        if(visitedNodes.contains(node.getData()))
+    private boolean ContainNode(Node node){
+        if(visitedNodes.contains(node))
             return true;
         else {
-            visitedNodes.add(node.getData());
+            visitedNodes.add(node);
             return false;
         }
     }
 
-    public void PrintInOrder(Node node) {
-
+    public void InOrderTraversal(Node node) {
         if (node != null) {
-            PrintInOrder(node.getLeftChild());
+            InOrderTraversal(node.getLeftChild());
             System.out.println(node.toString());
-            PrintInOrder(node.getRightChild());
+            InOrderTraversal(node.getRightChild());
         }
     }
 
