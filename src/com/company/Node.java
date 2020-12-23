@@ -5,11 +5,11 @@ class Node {
      private int data;
       Node leftChild;
       Node rightChild;
+      Node mid;
 
     public Node(int data) {
         this.data = data;
-        this.leftChild=null;
-        this.rightChild=null;
+
 
     }
 
@@ -35,6 +35,10 @@ class Node {
 
     public void setRightChild(Node rightChild) {
         this.rightChild = rightChild;
+    }
+
+    public Node getMid(){
+        return mid;
     }
 
     @Override

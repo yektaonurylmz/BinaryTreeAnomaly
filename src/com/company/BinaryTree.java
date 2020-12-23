@@ -7,9 +7,7 @@ public class BinaryTree {
     private Node root;
     private static ArrayList<Node> visitedNodes = new ArrayList<>();
 
-    BinaryTree(int data){
-        root=new Node(data);
-    }
+
     BinaryTree(){
         root = null;
     }
@@ -32,14 +30,14 @@ public class BinaryTree {
         tree.root.leftChild.leftChild.leftChild.rightChild=new Node(14);
 
         // Binary tree yapısına uymayan -Anomaliye sahip- bir ağaç oluşturuldu.
-        tree.root.rightChild.leftChild =  tree.root.leftChild.leftChild;
+         tree.root.rightChild.mid =new Node(73);
+         tree.root.rightChild.leftChild =  tree.root.leftChild.leftChild;
         tree.InOrderTraversal(tree.root);
         boolean isAnomaly = tree.CheckAnomaly(tree.root);
         System.out.println("Anomaly Status: " + isAnomaly);
        // System.out.println(visitedNodes);
 
          /*
-
                            50
 
                       /           \
@@ -47,21 +45,35 @@ public class BinaryTree {
                     /               \
                    /                 \
                   25                 75
-               /      \             /   \
-              15       30         15      80
+               /      \             /  |  \
+              15       30         15   73  80
              /  \      /  \      / \
           13    23    26  32     . .
         /   \   /  \             . .
       12    14  22  24
 
   */
+
+
+    }
+
+
+    boolean CheckMidNode(Node node){
+
+        if(node.getMid()!=null){
+            CheckMidNode(node.getMid());
+            return true;
+
+        }
+
+       return false;
     }
 
     public boolean CheckAnomaly(Node node) {
 
         if (node != null) {
 
-            return ContainNode(node) || CheckAnomaly(node.getLeftChild()) || CheckAnomaly(node.getRightChild());
+            return ContainNode(node) || CheckAnomaly(node.getLeftChild()) || CheckMidNode(node)|| CheckAnomaly(node.getRightChild())  ;
 
         }
         return false;
@@ -78,9 +90,12 @@ public class BinaryTree {
     public void InOrderTraversal(Node node) {
         if (node != null) {
             InOrderTraversal(node.getLeftChild());
+            InOrderTraversal(node.getMid());
             System.out.println(node.toString());
             InOrderTraversal(node.getRightChild());
         }
     }
+
+
 
 }
